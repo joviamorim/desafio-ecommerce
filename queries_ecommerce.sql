@@ -33,6 +33,15 @@ select su.socialName as nome_fornecedor, pr.pName as nome_produto , pr.idProduct
 	inner join product pr
 		using (idProduct)
         order by (su.socialName);
+
+-- Relação do nome dos fornecedores e nome dos produtos (restringindo a número produtos por fornecedor > 1)
+select su.socialName as nome_fornecedor, count(*) as qtd_produtos
+	from suplier su inner join productSuplier psu
+		on su.idSuplier = psu.idPSuplier
+	inner join product pr
+		using (idProduct)
+        group by (su.socialName)
+        having qtd_produtos>1;
         
 -- Consultando informações únicas do cliente (cpf e cnpj)
 select c.idClient, concat(fname,' ',lName) as nome, f.cpf as cpf, j.cnpj as cnpj
